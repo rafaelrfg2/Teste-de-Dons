@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Teste de Dons</title>
+  <style>
+    body {
+      background: #f5f5fa;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      color: #222;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background: #3549a9;
+      color: #fff;
+      text-align: center;
+      padding: 1.2em 0.7em;
+    }
+    .container {
+      max-width: 640px;
+      margin: 2em auto 1em auto;
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 0 4px 18px #b1b3c5aa;
+      padding: 2em 1em 2em 1em;
+    }
+    h2 {
+      font-size: 1.25em;
+      margin-bottom: 1.2em;
+      text-align: center;
+    }
+    .question {
+      margin-bottom: 1.2em;
+      padding: 0.7em 0;
+      border-bottom: 1px solid #e2e6ee;
+    }
+    .question-text {
+      font-weight: 500;
+      margin-bottom: 0.33em;
+      font-size: 1.01em;
+    }
+    .options {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 0.3em;
+      justify-content: center;
+    }
+    .options label {
+      background: #e0e7ff;
+      border: 1.5px solid #3549a9;
+      border-radius: 9px;
+      padding: 0.4em 0.8em;
+      cursor: pointer;
+      transition: background 0.15s;
+      font-size: 1em;
+      min-width: 63px;
+      text-align: center;
+      color: #3549a9;
+      font-weight: 500;
+    }
+    .options input:checked + label {
+      background: #3549a9;
+      color: #fff;
+      font-weight: 600;
+      border-width: 2.2px;
+    }
+    .options input {
+      display: none;
+    }
+    .legend {
+      font-size: 0.96em;
+      color: #444;
+      margin-bottom: 1.5em;
+      text-align: left;
+      background: #eaf0fc;
+      padding: 0.7em 1em;
+      border-radius: 11px;
+      line-height: 1.7;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .legend-list {
+      margin: 0.7em 0 0 0;
+      padding: 0;
+      list-style: none;
+    }
+    .legend-list li {
+      margin: 0 0 0.5em 0;
+      padding-left: 0;
+      font-size: 1em;
+      color: #293e7b;
+      font-weight: 500;
+    }
+    button {
+      display: block;
+      margin: 2.1em auto 1em auto;
+      padding: 1em 2em;
+      background: #3549a9;
+      color: #fff;
+      border: none;
+      border-radius: 9px;
+      font-size: 1.07em;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 2px 8px #c2c4df44;
+      transition: background 0.2s;
+    }
+    button:hover,
+    button:focus {
+      background: #253282;
+    }
+    #result {
+      display: none;
+      background: #eaf0fc;
+      border-radius: 13px;
+      margin-top: 2em;
+      padding: 1.5em 1em;
+      text-align: center;
+      outline: none;
+    }
+    #result h3 {
+      font-size: 1.15em;
+      margin-bottom: 0.2em;
+      color: #293e7b;
+    }
+    #result p {
+      font-size: 0.92em;
+      color: #444;
+      margin-top: 0;
+      margin-bottom: 1.2em;
+      font-weight: 600;
+    }
+    .score-list {
+      list-style: none;
+      margin: 1em 0 0.5em 0;
+      padding: 0;
+      font-size: 1.065em;
+    }
+    .score-list li {
+      margin: 0.33em 0;
+      padding: 0.36em 0.7em;
+      border-radius: 6px;
+      color: #2c355c;
+      background: #fff;
+      font-weight: 500;
+      display: flex;
+      justify-content: space-between;
+    }
+    .score-list li.top-score {
+      background: #3549a9;
+      color: #fff;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+    }
+    #restart-btn {
+      margin: 2em auto 1em auto;
+      padding: 0.7em 2.1em;
+      background: #505abf;
+      color: #fff;
+      border: none;
+      border-radius: 9px;
+      font-size: 1.09em;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 2px 8px #c2c4df44;
+      display: block;
+      transition: background 0.2s;
+    }
+    #restart-btn:hover,
+    #restart-btn:focus {
+      background: #272c5d;
+    }
+    .credit {
+      text-align: center;
+      color: #888;
+      margin: 2em auto 0.3em auto;
+      font-size: 0.92em;
+      letter-spacing: 0.1px;
+      line-height: 1.6;
+    }
+    .credit a {
+      color: #3549a9;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .credit-extra {
+      font-size: 0.97em;
+      margin-top: 0.2em;
+      color: #666;
+      font-weight: 500;
+    }
+    @media (max-width: 480px) {
+      .container {
+        padding: 1em 0.2em 1em 0.2em;
+      }
+      .legend {
+        font-size: 1em;
+        padding: 0.7em 0.4em;
+      }
+      .question-text {
+        font-size: 1em;
+      }
+      button,
+      #restart-btn {
+        font-size: 0.99em;
+        padding: 1em;
+      }
+      .credit,
+      .credit-extra {
+        font-size: 0.98em;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Teste de Dons</h1>
+  </header>
+  <div class="container" id="form-container">
+    <div class="legend">
+      Preencha cada afirmativa com:
+      <ul class="legend-list">
+        <li><strong>3</strong> - Descreve-me de forma correta</li>
+        <li><strong>2</strong> - É uma tendência minha</li>
+        <li><strong>1</strong> - Tenho pequena inclinação para isto</li>
+        <li><strong>0</strong> - Não tem nada a ver comigo</li>
+      </ul>
+    </div>
+    <form id="donsForm" autocomplete="off">
+      <!-- Perguntas são inseridas via JS -->
+    </form>
+    <button id="submit-btn" type="button">Ver resultado do teste</button>
+    <div id="result" role="region" aria-live="polite" tabindex="-1">
+      <h3>Seus resultados:</h3>
+      <p>As notas mais altas apontam suas tendências.</p>
+      <ul class="score-list" id="score-list"></ul>
+    </div>
+    <button id="restart-btn" type="button" style="display:none;">Recomeçar o teste</button>
+  </div>
+  <div class="credit">
+    Digitalizado por <a href="https://www.instagram.com/rafaelrfg" target="_blank" rel="noopener">@rafaelrfg</a>
+    <div class="credit-extra">Igreja Batista do Calvário - Teresina - Pi</div>
+  </div>
+  <script>
+    // Perguntas do teste
+    const questions = [
+      "Gosto de apresentar a verdade de Deus numa forma interessante e entusiasta.",
+      "Estou sempre pronto para colocar em posição secundária meu conforto pessoal a fim de que as necessidades alheias sejam satisfeitas.",
+      "Tenho facilidade para explorar a verdade de um texto dentro do seu contexto.",
+      "Procuro incentivar individualmente os que vacilam e tem problemas espirituais.",
+      "Administro meu dinheiro, mesmo quando pouco, de modo a separar uma quantia generosa para o trabalho de Deus.",
+      "Acho fácil delegar responsabilidades e preparar outras pessoas para realizações no campo espiritual.",
+      "Sou muito sensível às necessidades dos outros.",
+      "Acho fácil falar de Jesus para não crentes.",
+      "Gosto de acompanhar cristãos para ajudá-los no seu crescimento espiritual.",
+      "Quando tento persuadir pessoas a respeito de suas reais motivações, faço -o de modo muito convincente.",
+      "Consigo levar pessoas a se sentirem à vontade na minha presença.",
+      "Sinto grande impulso para descobrir conceitos bíblicos e repassá-los a outros.",
+      "Sempre estou interessado e procuro ajudar o crescimento espiritual das pessoas e levá-las a serem ativas na obra de Deus.",
+      "Alegro-me em dar recursos materiais, de sorte que a obra do Senhor possa ser promovida.",
+      "Sou eficiente em supervisionar as atividades dos outros.",
+      "Gosto de visitar pessoas hospitalizadas ou que não podem sair de casa.",
+      "Já tive experiências de levar outros à fé em Jesus.",
+      "Tenho experiência de levar cristãos a permanecerem firmes na fé devido ao meu acompanhamento.",
+      "Posso apresentar a Palavra de Deus a uma congregação de pessoas com clareza a ponto de serem trazidas à luz verdades escondidas.",
+      "Sinto-me feliz quando solicitado a dar assistência a outros na obra do Senhor sem necessariamente ser indicado para um posto de liderança.",
+      "Sou muito interessado em apresentar conceitos bíblicos de modo bem claro, dando especial atenção a definição de palavras importantes no texto.",
+      "Sinto-me feliz por poder tratar as pessoas feridas espiritualmente.",
+      "Não tenho nenhum problema em confiar os meus recursos a outros para a obra do ministério.",
+      "Posso planejar as ações de outras pessoas, com calma, e dar-lhes os detalhes que as capacitem a trabalhar com eficiência.",
+      "Tenho grande interesse pelos que se acham envolvidos em dificuldades.",
+      "Considero um grande problema o fato de muitos cristãos não falarem aos outros da sua fé em Jesus.",
+      "Preocupo-me com o fato de que muitos cristãos não receberem um acompanhamento na sua vida pessoal e espiritual.",
+      "Esforço-me grandemente para obter resultados, sempre que apresento as verdades da Palavra de Deus.",
+      "Sinto-me bem quando proporciono um agradável acolhimento aos hóspedes.",
+      "Sou diligente em meu estudo da Bíblia e dispenso cuidadosa atenção à necessária pesquisa, não apenas para mostrar sabedoria, mas porque eu gosto.",
+      "Julgo poder ajudar os que têm necessidades de aconselhamento sobre problemas pessoais.",
+      "Preocupo-me em saber que o trabalho de assistência social está sendo suprido de recursos.",
+      "Procuro estar ciente dos recursos disponíveis para a execução das tarefas que tenho que realizar.",
+      "Sinto-me feliz quando consigo atingir pessoas geralmente esquecidas pelos outros.",
+      "Para mim é fácil perceber quando uma pessoa está aberta a aceitar o evangelho.",
+      "É fácil, para mim, acompanhar pessoalmente um grupo de cristãos e me empenhar pela sua unidade.",
+      "Verifico que minha pregação leve pessoas a um ponto de decisão definido.",
+      "Gosto de aliviar a carga das pessoas que ocupam uma posição-chave, de sorte que possam esforçar-se mais em tarefas a elas concernentes.",
+      "Posso explicar bem como a Bíblia mantém sua unidade.",
+      "Sou agudamente consciente das coisas que impedem as pessoas em seu desenvolvimento espiritual e anseio por ajudá-las a vencer seus problemas.",
+      "Sou cuidadoso com a questão de dinheiro e oro continuamente acerca de sua distribuição adequada na obra do Senhor.",
+      "Tenho objetivos bem definidos e consigo levar outros a assumirem meus objetivos.",
+      "Posso relacionar-me com outras pessoas emocionalmente e me disponho a ajudá-las quando for necessário.",
+      "Estou disposto a frequentar um curso preparatório para o evangelismo.",
+      "Estou disposto a assumir a responsabilidade por um grupo de irmãos.",
+    ];
+
+    // Quadrantes conforme tabela do PDF – cálculo de pontuação
+    const quadrants = [
+      { key: "A", label: "Profecia", indexes: [0, 9, 18, 27, 36] },
+      { key: "D", label: "Serviço", indexes: [3, 12, 21, 30, 39] },
+      { key: "G", label: "Ensino", indexes: [6, 15, 24, 33, 42] },
+      { key: "C", label: "Exortação", indexes: [2, 11, 20, 29, 38] },
+      { key: "F", label: "Contribuição", indexes: [5, 14, 23, 32, 41] },
+      { key: "I", label: "Governo", indexes: [8, 17, 26, 35, 44] },
+      { key: "B", label: "Misericórdia", indexes: [1, 10, 19, 28, 37] },
+      { key: "E", label: "Evangelista", indexes: [7, 16, 25, 34, 43] },
+      { key: "H", label: "Pastor (Presbítero)", indexes: [4, 13, 22, 31, 40] },
+    ];
+
+    // Opções de resposta
+    const optionLabels = [
+      { val: "3", label: "Descreve-me de forma correta" },
+      { val: "2", label: "É uma tendência minha" },
+      { val: "1", label: "Tenho pequena inclinação para isto" },
+      { val: "0", label: "Não tem nada a ver comigo" },
+    ];
+
+    // Renderiza perguntas
+    const formEl = document.getElementById("donsForm");
+    questions.forEach((q, idx) => {
+      const div = document.createElement("div");
+      div.className = "question";
+      div.innerHTML = `<div class="question-text"> <span style="color:#3549a9;font-weight:700">${(idx + 1)
+        .toString()
+        .padStart(2, "0")}</span> - ${q}</div>`;
+      const optionsDiv = document.createElement("div");
+      optionsDiv.className = "options";
+
+      optionLabels.forEach((opt) => {
+        const input = document.createElement("input");
+        input.type = "radio";
+        input.name = "q" + idx;
+        input.id = `q${idx}_${opt.val}`;
+        input.value = opt.val;
+        input.setAttribute("aria-label", opt.label);
+
+        const label = document.createElement("label");
+        label.htmlFor = input.id;
+        label.innerText = opt.val;
+
+        optionsDiv.appendChild(input);
+        optionsDiv.appendChild(label);
+      });
+      div.appendChild(optionsDiv);
+      formEl.appendChild(div);
+    });
+
+    // Submissão do teste
+    document.getElementById("submit-btn").onclick = function () {
+      // Coleta respostas
+      const responses = [];
+      let filled = true;
+      for (let i = 0; i < questions.length; i++) {
+        const selected = document.querySelector(`input[name='q${i}']:checked`);
+        if (selected) responses.push(Number(selected.value));
+        else filled = false;
+      }
+      if (!filled) {
+        alert("Por favor, responda todas as perguntas antes de ver o resultado.");
+        return;
+      }
+      // Calcula pontuação dos quadrantes
+      const scores = quadrants.map((q) => {
+        return {
+          label: q.label,
+          value: q.indexes.reduce((sum, idx) => sum + responses[idx], 0),
+        };
+      });
+      // Ordena do maior para menor
+      scores.sort((a, b) => b.value - a.value);
+      // Mostra resultado
+      const resEl = document.getElementById("result");
+      const listEl = document.getElementById("score-list");
+      listEl.innerHTML = "";
+      const maxScore = scores[0].value;
+      scores.forEach((s) => {
+        const li = document.createElement("li");
+        li.textContent = `${s.label}: ${s.value}`;
+        if (s.value === maxScore) li.className = "top-score";
+        listEl.appendChild(li);
+      });
+      resEl.style.display = "block";
+      resEl.focus();
+      document.getElementById("submit-btn").style.display = "none";
+      document.getElementById("restart-btn").style.display = "block";
+      // Remove scroll para cima para manter no resultado
+    };
+
+    // Reinício do teste
+    document.getElementById("restart-btn").onclick = function () {
+      // Limpa seleções
+      for (let i = 0; i < questions.length; i++) {
+        const inputs = document.getElementsByName("q" + i);
+        Array.from(inputs).forEach((inp) => (inp.checked = false));
+      }
+      // Oculta resultado
+      document.getElementById("result").style.display = "none";
+      document.getElementById("submit-btn").style.display = "block";
+      document.getElementById("restart-btn").style.display = "none";
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    };
+  </script>
+</body>
+</html>
