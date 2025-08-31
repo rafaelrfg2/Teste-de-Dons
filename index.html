@@ -213,6 +213,15 @@
       .credit-extra {
         font-size: 0.98em;
       }
+      /* Mantém as opções em linha única no celular */
+      .options {
+        flex-wrap: nowrap !important;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+      .options label {
+        flex-shrink: 0;
+      }
     }
   </style>
 </head>
@@ -224,10 +233,10 @@
     <div class="legend">
       Preencha cada afirmativa com:
       <ul class="legend-list">
-        <li><strong>3</strong> - Descreve-me de forma correta</li>
-        <li><strong>2</strong> - É uma tendência minha</li>
-        <li><strong>1</strong> - Tenho pequena inclinação para isto</li>
         <li><strong>0</strong> - Não tem nada a ver comigo</li>
+        <li><strong>1</strong> - Tenho pequena inclinação para isto</li>
+        <li><strong>2</strong> - É uma tendência minha</li>
+        <li><strong>3</strong> - Descreve-me de forma correta</li>
       </ul>
     </div>
     <form id="donsForm" autocomplete="off">
@@ -242,7 +251,10 @@
     <button id="restart-btn" type="button" style="display:none;">Recomeçar o teste</button>
   </div>
   <div class="credit">
-    Digitalizado por <a href="https://www.instagram.com/rafaelrfg" target="_blank" rel="noopener">@rafaelrfg</a>
+    Digitalizado por
+    <a href="https://www.instagram.com/rafaelrfg" target="_blank" rel="noopener"
+      >@rafaelrfg</a
+    >
     <div class="credit-extra">Igreja Batista do Calvário - Teresina - Pi</div>
   </div>
   <script>
@@ -308,12 +320,12 @@
       { key: "H", label: "Pastor (Presbítero)", indexes: [4, 13, 22, 31, 40] },
     ];
 
-    // Opções de resposta
+    // Opções de resposta invertidas para 0,1,2,3
     const optionLabels = [
-      { val: "3", label: "Descreve-me de forma correta" },
-      { val: "2", label: "É uma tendência minha" },
-      { val: "1", label: "Tenho pequena inclinação para isto" },
       { val: "0", label: "Não tem nada a ver comigo" },
+      { val: "1", label: "Tenho pequena inclinação para isto" },
+      { val: "2", label: "É uma tendência minha" },
+      { val: "3", label: "Descreve-me de forma correta" },
     ];
 
     // Renderiza perguntas
@@ -384,7 +396,7 @@
       resEl.focus();
       document.getElementById("submit-btn").style.display = "none";
       document.getElementById("restart-btn").style.display = "block";
-      // Remove scroll para cima para manter no resultado
+      // Não faz scroll para o topo para manter no resultado
     };
 
     // Reinício do teste
