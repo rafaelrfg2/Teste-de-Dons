@@ -213,7 +213,7 @@
       .credit-extra {
         font-size: 0.98em;
       }
-      /* Mantém as opções em linha única no celular */
+      /* Mantém as opções em uma linha com menor largura dos botões */
       .options {
         flex-wrap: nowrap !important;
         overflow-x: auto;
@@ -221,6 +221,9 @@
       }
       .options label {
         flex-shrink: 0;
+        min-width: 50px;
+        padding: 0.3em 0.6em;
+        font-size: 0.9em;
       }
     }
   </style>
@@ -239,26 +242,23 @@
         <li><strong>3</strong> - Descreve-me de forma correta</li>
       </ul>
     </div>
-    <form id="donsForm" autocomplete="off">
-      <!-- Perguntas são inseridas via JS -->
-    </form>
+    <form id="donsForm" autocomplete="off"></form>
     <button id="submit-btn" type="button">Ver resultado do teste</button>
     <div id="result" role="region" aria-live="polite" tabindex="-1">
       <h3>Seus resultados:</h3>
       <p>As notas mais altas apontam suas tendências.</p>
       <ul class="score-list" id="score-list"></ul>
     </div>
-    <button id="restart-btn" type="button" style="display:none;">Recomeçar o teste</button>
+    <button id="restart-btn" type="button" style="display:none;">
+      Recomeçar o teste
+    </button>
   </div>
   <div class="credit">
     Digitalizado por
-    <a href="https://www.instagram.com/rafaelrfg" target="_blank" rel="noopener"
-      >@rafaelrfg</a
-    >
+    <a href="https://www.instagram.com/rafaelrfg" target="_blank" rel="noopener">@rafaelrfg</a>
     <div class="credit-extra">Igreja Batista do Calvário - Teresina - Pi</div>
   </div>
   <script>
-    // Perguntas do teste
     const questions = [
       "Gosto de apresentar a verdade de Deus numa forma interessante e entusiasta.",
       "Estou sempre pronto para colocar em posição secundária meu conforto pessoal a fim de que as necessidades alheias sejam satisfeitas.",
@@ -307,7 +307,6 @@
       "Estou disposto a assumir a responsabilidade por um grupo de irmãos.",
     ];
 
-    // Quadrantes conforme tabela do PDF – cálculo de pontuação
     const quadrants = [
       { key: "A", label: "Profecia", indexes: [0, 9, 18, 27, 36] },
       { key: "D", label: "Serviço", indexes: [3, 12, 21, 30, 39] },
@@ -320,7 +319,6 @@
       { key: "H", label: "Pastor (Presbítero)", indexes: [4, 13, 22, 31, 40] },
     ];
 
-    // Opções de resposta invertidas para 0,1,2,3
     const optionLabels = [
       { val: "0", label: "Não tem nada a ver comigo" },
       { val: "1", label: "Tenho pequena inclinação para isto" },
@@ -328,7 +326,6 @@
       { val: "3", label: "Descreve-me de forma correta" },
     ];
 
-    // Renderiza perguntas
     const formEl = document.getElementById("donsForm");
     questions.forEach((q, idx) => {
       const div = document.createElement("div");
@@ -358,9 +355,7 @@
       formEl.appendChild(div);
     });
 
-    // Submissão do teste
     document.getElementById("submit-btn").onclick = function () {
-      // Coleta respostas
       const responses = [];
       let filled = true;
       for (let i = 0; i < questions.length; i++) {
@@ -372,16 +367,13 @@
         alert("Por favor, responda todas as perguntas antes de ver o resultado.");
         return;
       }
-      // Calcula pontuação dos quadrantes
       const scores = quadrants.map((q) => {
         return {
           label: q.label,
           value: q.indexes.reduce((sum, idx) => sum + responses[idx], 0),
         };
       });
-      // Ordena do maior para menor
       scores.sort((a, b) => b.value - a.value);
-      // Mostra resultado
       const resEl = document.getElementById("result");
       const listEl = document.getElementById("score-list");
       listEl.innerHTML = "";
@@ -396,17 +388,13 @@
       resEl.focus();
       document.getElementById("submit-btn").style.display = "none";
       document.getElementById("restart-btn").style.display = "block";
-      // Não faz scroll para o topo para manter no resultado
     };
 
-    // Reinício do teste
     document.getElementById("restart-btn").onclick = function () {
-      // Limpa seleções
       for (let i = 0; i < questions.length; i++) {
         const inputs = document.getElementsByName("q" + i);
         Array.from(inputs).forEach((inp) => (inp.checked = false));
       }
-      // Oculta resultado
       document.getElementById("result").style.display = "none";
       document.getElementById("submit-btn").style.display = "block";
       document.getElementById("restart-btn").style.display = "none";
